@@ -1,0 +1,6 @@
+﻿<linker>
+	<!-- Can be removed if CompiledBinding and no reflection are used -->
+	<assembly fullname="ModTranslatorGUI" preserve="All" />
+	<assembly fullname="Avalonia.Themes.Fluent" preserve="All" />
+	<assembly fullname="Citrus.Avalonia" preserve="All" />
+</linker>

@@ -15,27 +15,34 @@ namespace ModManagerGUI
         public static Configuration Configuration;
         public static void Start(IMod mod, Configuration configuration)
         {
+            Libraries.Initialize();
             Mod = mod;
             Configuration = configuration;
-            NativeLibrary.SetDllImportResolver(Assembly.GetAssembly(typeof(ModManager)), (libraryName, assembly, searchPath) => {
-                IntPtr handle;
-                var paths = new List<string>() { Environment.CurrentDirectory, System.IO.Path.Combine(Environment.CurrentDirectory, "libs") };
-                foreach (var path in paths)
-                {
-                    System.Console.WriteLine(path);
-                    System.Console.WriteLine(searchPath);
-                    System.Console.WriteLine(assembly);
-                    if (NativeLibrary.TryLoad(System.IO.Path.Combine(path, libraryName), assembly, searchPath, out handle))
-                        return handle;
-                }
-                return IntPtr.Zero;
-            });
-
+            var assemblies = new Assembly[] { typeof(ModManager).Assembly };
+            //NativeLibrary.Load("libs/libSkiaSharp.dll");
+            //NativeLibrary.Load("libs/libHarfBuzzSharp.dll");
+            foreach (var assembly in assemblies)
+            {
+                NativeLibrary.SetDllImportResolver(Assembly.GetAssembly(typeof(ModManager)), ResolveLibrary);
+            }
             BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(new string[] { });
         }
+        
+        private static IntPtr ResolveLibrary(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+        {
+            IntPtr handle;
+            var temp = System.IO.Path.GetTempPath();
+            var paths = new List<string>() { System.IO.Path.GetDirectoryName(Environment.ProcessPath), System.IO.Path.Combine(temp, "Translator") };
+            foreach (var path in paths)
+            {
+                if (NativeLibrary.TryLoad(System.IO.Path.Combine(path, libraryName), assembly, searchPath, out handle))
+                    return handle;
+            }
+            return IntPtr.Zero;
+        }
 
-        // Avalonia configuration, don't remove; also used by visual designer.
+// Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()

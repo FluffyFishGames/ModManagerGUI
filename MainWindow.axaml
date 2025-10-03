@@ -9,7 +9,6 @@
         Title=""
 		MinWidth="500" SizeToContent="Height"
 		CanResize="False"
-		Background="#101010"
         ExtendClientAreaToDecorationsHint="True">
 	<Window.Styles>
 		<Style Selector="TextBox.progress">
@@ -21,14 +20,27 @@
 		<Style Selector="TextBox.progress:pointerover /template/ Border">
 			<Setter Property="Background" Value="Transparent" />
 		</Style>
+		<Style Selector="Border.MacOS">
+			<Setter Property="Margin" Value="60,0,0,0" />
+		</Style>
 	</Window.Styles>
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="30" />
+			<RowDefinition Height="40" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<TextBlock x:Name="TitleText" PointerPressed="MoveWindow" HorizontalAlignment="Stretch" Background="Transparent" Grid.Row="0" Margin="10,8,0,0" FontWeight="Bold" Height="30" Text="Little Witch Translator" />
-		<Grid IsVisible="True" x:Name="IntroductionPanel" Grid.Row="1" Margin="2,0,2,2" Background="#212121">
+		<Border x:Name="TopBorder" Grid.Row="0" Background="#40000000">
+			<Grid>
+				<TextBlock x:Name="TitleText" HorizontalAlignment="Stretch" Background="Transparent" Margin="10,8,0,0" FontWeight="Bold" Height="30" Text="Little Witch Translator" />
+				<TextBlock HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch" PointerPressed="MoveWindow" />
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,150,0">
+					<ComboBox Classes="Language" Height="30" Padding="5" SelectedIndex="{Binding CurrentLanguage}" Items="{Binding Languages}">
+					</ComboBox>
+				</StackPanel>
+			</Grid>
+		</Border>
+
+		<Grid IsVisible="True" x:Name="IntroductionPanel" Grid.Row="1" Classes="Panel">
 			<StackPanel Orientation="Vertical" Margin="10">
 				<TextBlock TextWrapping="Wrap" Width="480" x:Name="WelcomeText0">Willkommen beim Little Witch Translator Mod.</TextBlock>
 				<TextBlock TextWrapping="Wrap" Width="480" Margin="0,10,0,0" x:Name="WelcomeText1">Diese Software ist KOSTENLOS. Das heißt, wenn Du hierfür bezahlt hast, wurdest Du betrogen.</TextBlock>
@@ -44,7 +56,7 @@
 				</StackPanel>
 			</StackPanel>
 		</Grid>
-		<Grid IsVisible="False" x:Name="SelectGamePathPanel" Grid.Row="1" Margin="2, 0, 2, 2" Background="#212121">
+		<Grid IsVisible="False" x:Name="SelectGamePathPanel" Grid.Row="1" Classes="Panel">
 			<StackPanel Orientation="Vertical" Margin="10">
 				<TextBlock TextWrapping="Wrap" Width="480" x:Name="PathText0">Um Dein Spiel zu modifizieren, wird der Pfad zu Deinen Spieldateien benötigt.</TextBlock>
 				<TextBlock TextWrapping="Wrap" Width="480" Margin="0,10,0,0" x:Name="PathText1">Solltest Du Probleme haben, Deine Spieldateien zu finden, so kannst Du ihn in Steam finden. Klicke dazu einfach mit einem Rechtsklick auf Dein Spiel und wähle "Eigenschaften" aus.</TextBlock>
@@ -70,27 +82,31 @@
 				</StackPanel>
 			</StackPanel>
 		</Grid>
-		<Grid IsVisible="False" x:Name="SelectModsPanel" Grid.Row="1" Margin="2, 0, 2, 2" Background="#212121">
+		<Grid IsVisible="False" x:Name="SelectModsPanel" Grid.Row="1" Classes="Panel">
 			<StackPanel Orientation="Vertical" Margin="10">
 				<TextBlock TextWrapping="Wrap" Width="480" x:Name="ModsText0">Zusätzlich bietet diese Mod einige kleine Anpassungen, die Du am Spiel vornehmen kannst.</TextBlock>
 				<TextBlock TextWrapping="Wrap" Width="480" Margin="0,10,0,0" x:Name="ModsText1">Wähle einfach aus der Liste aus, welche zusätzlichen Funktionen Du nutzen möchtest:</TextBlock>
 				<StackPanel Orientation="Vertical" x:Name="Mods" Spacing="10" Margin="5,20,0,0">
 				</StackPanel>
 				<StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
-					<Button Grid.Column="1" Padding="10,0,10,4" Height="40" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="ContinueToApply">
+					<Button Padding="10,0,10,4" Margin="0,0,10,0" Height="40" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="ContinueToExtract" x:Name="ExtractButton" IsVisible="False">
+						<TextBlock x:Name="ExtractText">Texte Extrahieren</TextBlock>
+					</Button>
+					<Button Padding="10,0,10,4" Height="40" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="ContinueToApply">
 						<TextBlock x:Name="Continue1Text">Weiter</TextBlock>
 					</Button>
 				</StackPanel>
 			</StackPanel>
 		</Grid>
-		<Grid IsVisible="False" x:Name="ProgressPanel" Grid.Row="1" Margin="2, 0, 2, 2" Background="#212121">
+		<Grid IsVisible="False" x:Name="ProgressPanel" Grid.Row="1" Classes="Panel">
 			<StackPanel Orientation="Vertical" Margin="10">
-				<Border BorderBrush="#000000" Background="#111111" Height="200">
-					<ScrollViewer x:Name="ProgressScroll">
-						<TextBox Classes="progress" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" Margin="10" x:Name="ProgressText">
-						</TextBox>
+				<Border BorderBrush="#000000" Background="#20000000" Height="200">
+					<ScrollViewer x:Name="ProgressScroll" Padding="0">
+						<StackPanel x:Name="ProgressStack" Margin="5" Orientation="Vertical"></StackPanel>
 					</ScrollViewer>
 				</Border>
+				<ProgressBar Minimum="0" Maximum="100" Value="0" HorizontalAlignment="Stretch" Margin="0,10,0,5" x:Name="ProgressBar" Foreground="{StaticResource AccentColor}" />
+				<TextBlock HorizontalAlignment="Center" x:Name="ProgressText" Text=" " Margin="0,0,0,0" />
 				<StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
 					<Button x:Name="FinishButton" IsEnabled="False" Grid.Column="1" Padding="10,0,10,4" Height="40" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="Finish">
 						<TextBlock x:Name="FinishText">Schließen</TextBlock>
@@ -98,6 +114,10 @@
 				</StackPanel>
 			</StackPanel>
 		</Grid>
-			  
+
+		<Grid Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,10,10,15">
+			<ComboBox Classes="Debug" Height="40" Padding="10,0,10,4" Items="{Binding Debug}" x:Name="DebugOptions">
+			</ComboBox>
+		</Grid>
 	</Grid>
 </Window>

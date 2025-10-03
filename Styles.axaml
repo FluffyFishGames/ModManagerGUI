@@ -1,0 +1,247 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+		<Border Padding="20">
+			<StackPanel Spacing="10">
+				<ComboBox PlaceholderText="Select an item">
+					<ComboBoxItem>Item 1</ComboBoxItem>
+					<ComboBoxItem>Item 2</ComboBoxItem>
+				</ComboBox>
+				<ComboBox IsEnabled="False"
+						  Width="200"
+						  SelectedIndex="1"
+						  HorizontalContentAlignment="Center">
+					<ComboBoxItem>Item 1</ComboBoxItem>
+					<ComboBoxItem>Item 2</ComboBoxItem>
+				</ComboBox>
+				<ComboBox PlaceholderText="Error">
+				</ComboBox>
+			</StackPanel>
+		</Border>
+    </Design.PreviewWith>
+	<Styles.Resources>
+		<SolidColorBrush Color="#F18805" x:Key="HighlightBrush" />
+		<SolidColorBrush Color="#F18805" x:Key="AccentColor" />
+		<SolidColorBrush Color="#ef9321" x:Key="AccentColorBright" />
+		<SolidColorBrush Color="#d37909" x:Key="AccentColorDark" />
+	</Styles.Resources>
+		<Style Selector="ComboBox.Language">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Border Name="border"
+										BorderBrush="Transparent"
+										BorderThickness="{TemplateBinding BorderThickness}"
+										CornerRadius="{TemplateBinding CornerRadius}">
+							<Grid ColumnDefinitions="*,Auto">
+								<TextBlock Name="PlaceholderTextBlock"
+										   Grid.Column="0"
+										   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										   Margin="{TemplateBinding Padding}"
+										   Text="{TemplateBinding PlaceholderText}"
+										   Foreground="{TemplateBinding PlaceholderForeground}"
+										   IsVisible="{TemplateBinding SelectionBoxItem, Converter={x:Static ObjectConverters.IsNull}}" />
+
+								<Image Source="/images/language.png" Margin="{TemplateBinding Padding}"></Image>
+								<ToggleButton Name="toggle"
+											  Padding="6"
+											  Classes="LanguageToggle"
+											  BorderThickness="0"
+											  ClickMode="Press"
+											  Focusable="False"
+											  IsChecked="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+											  Grid.Column="1">
+									<Path Fill="{DynamicResource ThemeForegroundBrush}"
+										  Width="8"
+										  Height="4"
+										  Stretch="Uniform"
+										  HorizontalAlignment="Center"
+										  VerticalAlignment="Center"
+										  Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+								</ToggleButton>
+								<Popup Name="PART_Popup"
+									   IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+									   MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+									   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+									   PlacementTarget="{TemplateBinding}"
+									   IsLightDismissEnabled="True">
+									<Border Background="#0A0F0D"
+											BorderBrush="Transparent"
+											BorderThickness="1"
+											Padding="1">
+										<ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+													  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+											<ItemsPresenter Name="PART_ItemsPresenter"
+															Items="{TemplateBinding Items}"
+															ItemsPanel="{TemplateBinding ItemsPanel}"
+															ItemTemplate="{TemplateBinding ItemTemplate}"
+															VirtualizationMode="{TemplateBinding VirtualizationMode}" />
+										</ScrollViewer>
+									</Border>
+								</Popup>
+							</Grid>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+	<Style Selector="Window">
+		<Setter Property="Background">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0%, 0%" EndPoint="100%,100%">
+					<GradientStop Color="#192621" Offset="0" />
+					<GradientStop Color="#0A0F0D" Offset="1" />
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Grid.Panel">
+		<Setter Property="Background" Value="#10ffffff" />
+	</Style>
+	<Style Selector="Button">
+		<Setter Property="Background" Value="{StaticResource AccentColor}" />
+	</Style>
+	<Style Selector="Button:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="{StaticResource AccentColorBright}" />
+	</Style>
+	<Style Selector="Button:pressed /template/ ContentPresenter">
+		<Setter Property="Background" Value="{StaticResource AccentColorDark}" />
+	</Style>
+	<Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="#20ffffff" />
+	</Style>
+	<Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
+		<Setter Property="Background" Value="{StaticResource AccentColor}" />
+	</Style>
+	<Style Selector="ComboBox.Language /template/ Border#border">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="ComboBox.Language:pointerover /template/ Border#border">
+		<Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderHighBrush}" />
+		<Setter Property="Background" Value="#20ffffff" />
+	</Style>
+	<Style Selector="ComboBox.Language:disabled /template/ Border#border">
+		<Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
+	</Style>
+	<Style Selector="ComboBox.Language:dropdownopen /template/ Border#border">
+		<Setter Property="Background" Value="{StaticResource AccentColor}" />
+	</Style>
+	<Style Selector="ComboBox.Language /template/ ToggleButton#toggle">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="ComboBox.Language:pointerover /template/ ToggleButton#toggle">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="ToggleButton.LanguageToggle:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="ToggleButton.LanguageToggle:checked /template/ ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+
+	<Style Selector="TextBox">
+		<Setter Property="FontFamily" Value="Ubuntu" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Background" Value="#10ffffff" />
+		<Setter Property="Padding" Value="10" />
+		<Setter Property="Margin" Value="0 5" />
+		<Setter Property="SelectionBrush" Value="{StaticResource AccentColor}" />
+	</Style>
+	<Style Selector="TextBox:pointerover /template/ Border">
+		<Setter Property="Background" Value="#20ffffff" />
+	</Style>
+	<Style Selector="TextBox:focus /template/ Border">
+		<Setter Property="Background" Value="#20ffffff" />
+	</Style>
+	<Style Selector="TextBlock.Warning">
+		<Setter Property="Foreground" Value="#ffff66" />
+		<Setter Property="FontSize" Value="12" />
+	</Style>
+	<Style Selector="TextBlock.Error">
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="Foreground" Value="#ff6666" />
+		<Setter Property="FontSize" Value="12" />
+	</Style>
+	<Style Selector="TextBlock.Log">
+		<Setter Property="FontSize" Value="12" />
+	</Style>
+
+
+	<Style Selector="ComboBox.Debug">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Border Name="border"
+							Background="{TemplateBinding Background}"
+									BorderBrush="Transparent"
+									BorderThickness="{TemplateBinding BorderThickness}"
+									CornerRadius="{TemplateBinding CornerRadius}">
+						<Grid ColumnDefinitions="*,Auto">
+							<TextBlock VerticalAlignment="Center" Margin="10,5,5,10">Debug</TextBlock>
+							<ToggleButton Name="toggle"
+										  Padding="6"
+										  Classes="DebugToggle"
+										  BorderThickness="0"
+										  ClickMode="Press"
+										  Focusable="False"
+										  IsChecked="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+										  Grid.Column="1">
+								<Path Fill="{DynamicResource ThemeForegroundBrush}"
+									  Width="8"
+									  Height="4"
+									  Stretch="Uniform"
+									  HorizontalAlignment="Center"
+									  VerticalAlignment="Center"
+									  Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+							</ToggleButton>
+							<Popup Name="PART_Popup"
+								   IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+								   MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+								   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+								   PlacementTarget="{TemplateBinding}"
+								   IsLightDismissEnabled="True">
+								<Border Background="#0A0F0D"
+										BorderBrush="Transparent"
+										BorderThickness="1"
+										Padding="1">
+									<ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+												  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+										<ItemsPresenter Name="PART_ItemsPresenter"
+														Items="{TemplateBinding Items}"
+														ItemsPanel="{TemplateBinding ItemsPanel}"
+														ItemTemplate="{TemplateBinding ItemTemplate}"
+														VirtualizationMode="{TemplateBinding VirtualizationMode}" />
+									</ScrollViewer>
+								</Border>
+							</Popup>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="ComboBox.Debug /template/ Border#border">
+		<Setter Property="Background" Value="{StaticResource AccentColor}" />
+	</Style>
+	<Style Selector="ComboBox.Debug:pointerover /template/ Border#border">
+		<Setter Property="Background" Value="{StaticResource AccentColorBright}" />
+	</Style>
+	<Style Selector="ComboBox.Debug:disabled /template/ Border#border">
+		<Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
+	</Style>
+	<Style Selector="ComboBox.Debug /template/ ToggleButton#toggle">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="ComboBox.Debug:pointerover /template/ ToggleButton#toggle">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="ToggleButton.DebugToggle:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+	<Style Selector="ToggleButton.DebugToggle:checked /template/ ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
+	</Style>
+</Styles>

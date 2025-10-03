@@ -8,6 +8,7 @@ namespace ModManagerGUI
 {
     public class Configuration
     {
+        public bool ShowExtract = false;
         public string ApplicationName = "Little Witch Translator";
         public string GameName = "Little Witch in the Woods";
         public string[] FileNames = new string[] { "LWIW", "Little Witch in the Woods" };
@@ -17,5 +18,6 @@ namespace ModManagerGUI
             new string[] { "Jederzeit schlafen gehen", "Sleep anytime" },
             new string[] { "Immer neue Dialoage", "Always new dialogues"}
         };
+        public int[] StandardMods = new int[0];
     }
 }
